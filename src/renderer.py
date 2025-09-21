@@ -34,6 +34,9 @@ class Renderer:
         del self.display
         self.display = new_display
 
+    def addstr(self, x, y, string):
+        raise NotImplementedError
+
     def render(self, stdscr: window):
         for y in range(self.display_res[0]):
             for x in range(self.display_res[1]):
