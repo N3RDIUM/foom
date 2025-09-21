@@ -1,11 +1,6 @@
-# M U S I V E R S E
+# `foom`
 
-Musiverse is a curses-based modern, minimal, fully customizable and hackable terminal music player.
-It's currently in the pre-alpha stage, so expect bugs and "flashiness".
-The player can play anything that can be streamed from YouTube.
-I'll add more features and plugin support in the future.
-Do report any bugs / give suggestions for improvements in the repository issues.
-Feel free to fork and contribute!
+A curses-based terminal music player.
 
 ## Capabilities
 
@@ -27,6 +22,6 @@ Feel free to fork and contribute!
 
 ## Short-term TODO
 
-- [x] Make the UI renderer
+- [ ] Make the UI renderer
 - [ ] Make the actual UI
 
