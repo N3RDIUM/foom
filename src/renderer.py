@@ -1,124 +1,82 @@
-from curses import window, cbreak, curs_set, endwin, nocbreak, noecho, start_color
-from types import LambdaType
+from curses import *
+from time import sleep
 
-blank = "+"
+class Character:
+    char: str
+    changed: bool
 
-
-class RenderString:
-    resolution: list[int]
-    strings: list[str]
-    previous_strings: list[str]
-    initial_frame: bool
-
-    def __init__(self) -> None:
-        self.resolution = [42, 42]
-        self.strings = []
-        self.previous_strings = []
-        self.initial_frame = True
-
-        self.populate()
-
-    def populate(self) -> None:
-        x, y = self.resolution
-        self.strings = [blank * x for _ in range(y)]
-        self.previous_strings = self.strings
-
-    def clear(self) -> None:
-        x, y = self.resolution
-        self.strings = [blank * x for _ in range(y)]
-
-    def swap(self) -> None:
-        self.previous_strings = self.strings
-
-    def update_resolution(self, resolution: list[int]) -> None:
-        self.resolution = resolution
-        self.populate()
-
-    @property
-    def changed(self) -> bool:
-        if self.initial_frame:
-            self.initial_frame = False
-            return True
-
-        if len(self.strings) != len(self.previous_strings):
-            raise RuntimeError("The ruddy lengths don' match!")
-
-        for i in range(len(self.strings)):
-            string = self.strings[i]
-            previous = self.previous_strings[i]
-
-            if string != previous:
-                return True
-
-        return False
-
+    def __init__(self, char = " "):
+        self.char = char
+        self.changed = True
 
 class Renderer:
-    string: RenderString
-    pre_drawcall_hooks: list[LambdaType]
-    post_drawcall_hooks: list[LambdaType]
-    inloop: bool
-    frame_count: int
-    previous_resolution: list[int]
-
     def __init__(self):
-        self.string = RenderString()
-        self.pre_drawcall_hooks = []
-        self.post_drawcall_hooks = []
-        self.inloop = False
-        self.frame_count = 0
-        self.previous_resolution = [42, 42]
+        self.display_res = (42, 42)
+        self.display = []
+
+        self.frame = 0
+        self.in_mainloop = False
+
+        self.populate_display()
+
+    def populate_display(self):
+        new_display = []
+
+        for _ in range(self.display_res[0]):
+            row = []
+
+            for _ in range(self.display_res[1]):
+                char = " "
+                row.append(Character(char))
+
+            new_display.append(row)
+
+        del self.display
+        self.display = new_display
+
+    def render(self, stdscr: window):
+        for y in range(self.display_res[0]):
+            for x in range(self.display_res[1]):
+                char = self.display[y][x]
+                if not char.changed:
+                    continue
+
+                if y == self.display_res[0] - 1:
+                    if x == self.display_res[1] - 1:
+                        continue
+                
+                stdscr.addstr(y, x, char.char)
+                char.changed = False
+
+    def debug(self, stdscr: window):
+        debug_string = f"debug {self.frame}"
+        stdscr.addstr(
+            self.display_res[0] - 1, 
+            self.display_res[1] - len(debug_string) - 1,
+            debug_string
+        )
 
     def drawcall(self, stdscr: window):
-        if list(stdscr.getmaxyx()) != self.previous_resolution:
-            resolution = list(stdscr.getmaxyx())
-            resolution.reverse()
-            self.string.update_resolution(resolution)
-            self.previous_resolution = list(stdscr.getmaxyx())
-            self.string.initial_frame = True
-
-        for hook in self.pre_drawcall_hooks:
-            hook()
-
-        global blank
-        blank = str(self.frame_count)[-1]
-        self.string.clear()
-
-        debug = str(list(stdscr.getmaxyx()))
-        self.string.strings[0] = debug + self.string.strings[0][len(debug) :]
-
-        if not self.string.changed:
-            return
-
+        res = stdscr.getmaxyx()
+        if self.display_res != res:
+            self.display_res = res
+            self.populate_display()
+        
         stdscr.nodelay(True)
 
-        # TODO: Only update the area that has changed
-        # TODO: on a character level.
-        for i in range(len(self.string.strings)):
-            string = self.string.strings[i]
-
-            if i == len(self.string.strings) - 1:
-                string = string[:-1]  # What?!
-
-            stdscr.addstr(i, 0, string)
-
-        self.frame_count += 1
+        self.render(stdscr)
+        self.debug(stdscr)
+        
+        self.frame += 1
         stdscr.refresh()
 
-        for hook in self.post_drawcall_hooks:
-            hook()
-
-        self.string.swap()
-
     def mainloop(self, stdscr: window):
-        _ = curs_set(0)
         noecho()
         cbreak()
+        start_color()
 
-        _ = start_color()
-        self.inloop = True
-
-        while self.inloop:
+        self.in_mainloop = True
+        while self.in_mainloop:
             self.drawcall(stdscr)
 
         nocbreak()
