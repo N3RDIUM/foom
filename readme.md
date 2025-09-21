@@ -1,6 +1,6 @@
 # `foom`
 
-A curses-based terminal music player.
+A curses-based mpd client.
 
 ## Capabilities
 
