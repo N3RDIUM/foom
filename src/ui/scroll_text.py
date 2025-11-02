@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 from time import time
 
-#todo widget baseclass
+# todo widget baseclass
 class ScrollText:
     text: str
     width: int
@@ -41,7 +41,10 @@ class ScrollText:
 
         current = time()
         diff = current - self.start
-        offset = int((diff * 6) % len(self.text))
+
+        # todo make speed configurable
+        speed = 6
+        offset = int((diff * speed) % len(self.text))
 
         doubled = self.text + " " + self.text
         renderer.addstr(
@@ -49,3 +52,4 @@ class ScrollText:
             doubled[offset:offset + self.width],
             self.color_pair
         )
+

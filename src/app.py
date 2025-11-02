@@ -21,7 +21,7 @@ class StatusBar:
         self.state = state
 
     def render(self, renderer: Renderer):
-        #todo player state, keybinds, etc.
+        # todo player state, keybinds, etc.
 
         last_line = renderer.display_res[0] - 1
         last_line_text = f"{self.state.screen}"

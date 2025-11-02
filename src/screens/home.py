@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 from screens.screen import Screen
 from ui.scroll_text import ScrollText
 
-#todo find better ascii art
+# todo find better ascii art
 HOME_TEXT = r"""
 ░▒▓████████▓▒░ 
 ░▒▓█▓▒░        
