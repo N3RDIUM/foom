@@ -80,7 +80,7 @@ class Renderer:
         stdscr.nodelay(True)
 
         self.render(stdscr)
-        self.debug(stdscr)
+        # self.debug(stdscr)
         
         self.frame += 1
         stdscr.refresh()
