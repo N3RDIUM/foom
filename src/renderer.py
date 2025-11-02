@@ -1,22 +1,23 @@
-from curses import window
+from curses import window, color_pair
+from theme import DEFAULT
 
 class Character:
     char: str
+    pair: int
     changed: bool
 
-    def __init__(self, char: str = " "):
+    def __init__(self, char: str = " ", pair: int = DEFAULT):
         self.char = char
+        self.pair = pair
         self.changed = True
 
 class Renderer:
     display_res: tuple[int, int]
     display: list[list[Character]]
-    frame: int
 
     def __init__(self):
         self.display_res = (42, 42) # (cols, rows)
         self.display = []
-        self.frame = 0
 
         self.populate_display()
 
@@ -35,7 +36,7 @@ class Renderer:
         del self.display
         self.display = new_display
 
-    def addstr(self, x: int, y: int, string: str):
+    def addstr(self, x: int, y: int, string: str, pair: int = DEFAULT):
         if y < 0 or y >= self.display_res[0]:
             return
         
@@ -47,6 +48,7 @@ class Renderer:
             cell: Character = self.display[y][cx]
             if cell.char != ch:
                 cell.char = ch
+                cell.pair = pair
                 cell.changed = True
 
     def render(self, stdscr: window):
@@ -60,16 +62,12 @@ class Renderer:
                     if x == self.display_res[1] - 1:
                         continue
                 
-                stdscr.addstr(y, x, char.char)
+                stdscr.addstr(
+                    y, x, 
+                    char.char,
+                    color_pair(char.pair)
+                )
                 char.changed = False
-
-    def debug(self, stdscr: window):
-        debug_string = f"debug {self.frame}"
-        stdscr.addstr(
-            self.display_res[0] - 1, 
-            self.display_res[1] - len(debug_string) - 1,
-            debug_string
-        )
 
     def drawcall(self, stdscr: window):
         res = stdscr.getmaxyx()
@@ -80,8 +78,5 @@ class Renderer:
         stdscr.nodelay(True)
 
         self.render(stdscr)
-        # self.debug(stdscr)
-        
-        self.frame += 1
         stdscr.refresh()
 

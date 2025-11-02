@@ -5,6 +5,7 @@ if TYPE_CHECKING:
     from renderer import Renderer
 
 def draw_rect(renderer: Renderer, x: int, y: int, w: int, h: int):
+    #todo make this themable (select chars, color)
     horiz = "─"
     vert = "│"
     tl, tr, bl, br = "┌", "┐", "└", "┘"

@@ -1,5 +1,6 @@
 from curses import window, curs_set, noecho, cbreak, start_color, nocbreak, endwin
 
+from theme import load_theme
 from screens.screen import Screen
 from screens.home import Home
 from renderer import Renderer
@@ -41,7 +42,9 @@ class App:
         _ = curs_set(0)
         noecho()
         cbreak()
+
         start_color()
+        load_theme()
 
         self.state.mainloop = True
         while self.state.mainloop:
