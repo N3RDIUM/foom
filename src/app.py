@@ -21,8 +21,10 @@ class StatusBar:
 
     def render(self, renderer: Renderer):
         #todo player state, keybinds, etc.
+
         last_line = renderer.display_res[0] - 1
-        renderer.addstr(0, last_line, "A")
+        last_line_text = f"{self.state.screen}"
+        renderer.addstr(0, last_line, last_line_text)
 
 class App:
     renderer: Renderer
