@@ -6,8 +6,8 @@ if TYPE_CHECKING:
 
 class Screen:
     def __init__(self):
-        print("hi")
+        pass
 
     def render(self, renderer: Renderer):
-        pass
+        _ = renderer
 

@@ -13,10 +13,13 @@ class AppState:
         self.mainloop = False
 
 class StatusBar:
-    def __init__(self) -> None:
-        pass
+    state: AppState
+
+    def __init__(self, state: AppState) -> None:
+        self.state = state
 
     def render(self, renderer: Renderer):
+        #todo player state, keybinds, etc.
         last_line = renderer.display_res[0] - 1
         renderer.addstr(0, last_line, "A")
 
@@ -28,7 +31,7 @@ class App:
     def __init__(self) -> None:
         self.renderer = Renderer()
         self.state = AppState()
-        self.statusbar = StatusBar()
+        self.statusbar = StatusBar(self.state)
 
         self.screens: dict[str, Screen] = {
             "home": Home()
