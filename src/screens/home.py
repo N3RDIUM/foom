@@ -5,6 +5,7 @@ if TYPE_CHECKING:
     from renderer import Renderer
 
 from screens.screen import Screen
+from ui.rect import draw_rect
 
 class Home(Screen):
     def __init__(self):
@@ -13,4 +14,5 @@ class Home(Screen):
     @override
     def render(self, renderer: Renderer):
         renderer.addstr(0, 0, "Nothing.")
+        draw_rect(renderer, 10, 10, 20, 10)
 
