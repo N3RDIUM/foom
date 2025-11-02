@@ -1,4 +1,5 @@
 from curses import window, curs_set, noecho, cbreak, start_color, nocbreak, endwin
+from time import time, sleep
 
 from theme import load_theme
 from screens.screen import Screen
@@ -50,10 +51,19 @@ class App:
 
         self.state.mainloop = True
         while self.state.mainloop:
+            t0 = time()
+
             self.screens[self.state.screen].render(self.renderer)
             self.statusbar.render(self.renderer)
 
             self.renderer.drawcall(stdscr)
+
+            spent = time() - t0
+            minimum = 1 / 60
+
+            # fps cap
+            if spent < minimum:
+                sleep(minimum - spent)
 
         nocbreak()
         endwin()

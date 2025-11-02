@@ -1,11 +1,13 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, override
 
+from theme import DEFAULT
+
 if TYPE_CHECKING:
     from renderer import Renderer
 
 from screens.screen import Screen
-from ui.rect import draw_rect
+from ui.scroll_text import ScrollText
 
 #todo find better ascii art
 HOME_TEXT = r"""
@@ -21,6 +23,12 @@ HOME_TEXT = r"""
 class Home(Screen):
     def __init__(self):
         super().__init__()
+        self.txt = ScrollText(
+            "Wait a second. This actually works?! No way!",
+            10,
+            DEFAULT,
+            (4, 4)
+        )
 
     @override
     def render(self, renderer: Renderer):
@@ -34,4 +42,6 @@ class Home(Screen):
 
         for i, line in enumerate(lines):
             renderer.addstr(start_x, start_y + i, line)
+
+        self.txt.render(renderer)
 
