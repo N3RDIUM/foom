@@ -1,17 +1,21 @@
-from curses import *
-from time import sleep
+from curses import window, noecho, cbreak, start_color, nocbreak, endwin
 
 class Character:
     char: str
     changed: bool
 
-    def __init__(self, char = " "):
+    def __init__(self, char: str = " "):
         self.char = char
         self.changed = True
 
 class Renderer:
+    display_res: tuple[int, int]
+    display: list[list[Character]]
+    frame: int
+    in_mainloop: bool
+
     def __init__(self):
-        self.display_res = (42, 42)
+        self.display_res = (42, 42) # (cols, rows)
         self.display = []
 
         self.frame = 0
@@ -34,8 +38,19 @@ class Renderer:
         del self.display
         self.display = new_display
 
-    def addstr(self, x, y, string):
-        raise NotImplementedError
+    def addstr(self, x: int, y: int, string: str):
+        if y < 0 or y >= self.display_res[0]:
+            return
+        
+        for i, ch in enumerate(string):
+            cx = x + i
+            if cx < 0 or cx >= self.display_res[1]:
+                continue
+
+            cell: Character = self.display[y][cx]
+            if cell.char != ch:
+                cell.char = ch
+                cell.changed = True
 
     def render(self, stdscr: window):
         for y in range(self.display_res[0]):
