@@ -1,4 +1,4 @@
-from curses import window, noecho, cbreak, start_color, nocbreak, endwin
+from curses import window
 
 class Character:
     char: str
@@ -12,14 +12,11 @@ class Renderer:
     display_res: tuple[int, int]
     display: list[list[Character]]
     frame: int
-    in_mainloop: bool
 
     def __init__(self):
         self.display_res = (42, 42) # (cols, rows)
         self.display = []
-
         self.frame = 0
-        self.in_mainloop = False
 
         self.populate_display()
 
@@ -87,16 +84,4 @@ class Renderer:
         
         self.frame += 1
         stdscr.refresh()
-
-    def mainloop(self, stdscr: window):
-        noecho()
-        cbreak()
-        start_color()
-
-        self.in_mainloop = True
-        while self.in_mainloop:
-            self.drawcall(stdscr)
-
-        nocbreak()
-        endwin()
 
