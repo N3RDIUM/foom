@@ -1,7 +1,8 @@
 let pkgs = import <nixpkgs> { };
 in pkgs.mkShell {
-    packages = [
-        (pkgs.python3.withPackages (python-pkgs: []))
+    packages = with pkgs; [
+        python312
+        python312Packages.mpd2
     ];
     buildInputs = [  ];
 }

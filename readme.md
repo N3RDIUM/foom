@@ -17,6 +17,9 @@ A curses-based mpd client.
 - [ ] Visualizer (w/ cover art display in visualizer and player screens)
 - [ ] Plugin support
 
+## Requirements
+Make sure `mpd` is properly installed, set up and running.
+
 ## Usage
 Install the [Nix](https://nixos.org/) Package Manager:
 ```bash
