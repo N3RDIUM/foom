@@ -28,8 +28,8 @@ $ sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemo
 
 Clone this repo and `cd` into it:
 ```bash
-git clone https://n3rdium/Voxl.git voxl
-cd voxl
+git clone https://n3rdium/foom.git
+cd foom
 ```
 
 Enter nix shell (this will "install" all deps for you):
