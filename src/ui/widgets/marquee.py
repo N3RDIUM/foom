@@ -1,15 +1,16 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+from typing import override
 
 from theme import DEFAULT
+from ui.widget import Widget
 
 if TYPE_CHECKING:
     from renderer import Renderer
 
 from time import time
 
-# todo widget baseclass
-class ScrollText:
+class Marquee(Widget):
     text: str
     width: int
     color_pair: int
@@ -23,12 +24,14 @@ class ScrollText:
         color_pair: int = DEFAULT,
         position: tuple[int, int] = (0, 0)
     ) -> None:
+        super().__init__()
         self.text = text
         self.width = width
         self.color_pair = color_pair
         self.position = position
         self.start = time()
 
+    @override
     def render(self, renderer: Renderer) -> None:
         overflow = len(self.text) - self.width
         if overflow <= 0:
@@ -46,7 +49,7 @@ class ScrollText:
         speed = 6
         offset = int((diff * speed) % len(self.text))
 
-        doubled = self.text + " " + self.text
+        doubled = self.text + " " + self.text[:overflow]
         renderer.addstr(
             *self.position,
             doubled[offset:offset + self.width],

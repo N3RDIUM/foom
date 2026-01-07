@@ -1,9 +1,9 @@
 let pkgs = import <nixpkgs> { };
 in pkgs.mkShell {
     packages = with pkgs; [
-        python312
-        python312Packages.mpd2
-        python312Packages.ytmusicapi
+        python313
+        python313Packages.mpd2
+        python313Packages.ytmusicapi
     ];
     buildInputs = [  ];
 }

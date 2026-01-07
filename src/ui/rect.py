@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from renderer import Renderer
 
-# todo maybe OOPify this?
+
 def draw_rect(renderer: Renderer, x: int, y: int, w: int, h: int):
     # todo make this themable (select chars, color)
     horiz = "─"

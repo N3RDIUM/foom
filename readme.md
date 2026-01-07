@@ -16,6 +16,7 @@ A curses-based mpd client.
 - [ ] Mpris integration
 - [ ] Visualizer (w/ cover art display in visualizer and player screens)
 - [ ] Plugin support
+- [ ] Isolate the UI, mpris integration into separate pkgs/repos?
 
 ## Requirements
 Make sure `mpd` is properly installed, set up and running.

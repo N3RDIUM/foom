@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from renderer import Renderer
 
 from screens.screen import Screen
-from ui.scroll_text import ScrollText
+from ui.widgets.marquee import Marquee
 
 # todo find better ascii art
 HOME_TEXT = r"""
@@ -23,8 +23,8 @@ HOME_TEXT = r"""
 class Home(Screen):
     def __init__(self):
         super().__init__()
-        self.txt = ScrollText(
-            "Wait a second. This actually works?! No way!",
+        self.txt: Marquee = Marquee(
+            "Wait a second. This actually works? No way!",
             10,
             DEFAULT,
             (4, 4)
